@@ -69,17 +69,29 @@ TYPE
       Count     : INTEGER;  (* number of IFD entries *)
     END;
 
-    PROCEDURE SwapLong*(Value: LONGINT): LONGINT;
+    (*PROCEDURE SwapLong*(Value: LONGINT): LONGINT;
     VAR
       i : INTEGER;
       r : LONGINT;
     BEGIN
       r := 0;
       FOR i := 0 TO SIZE(Value) - 1 DO
-        
+       r := r + ((Value SHR (i*8)) & 0FFH) SHL ((SIZE(LONGINT)-i-1)*8);
       END;
     END SwapLong;
+    *)
 
+   PROCEDURE Swap (VAR a : ARRAY OF SYSTEM.BYTE);
+      VAR
+         i,j : LONGINT;
+   tmp : SYSTEM.BYTE;
+   BEGIN
+      i := 0; j := LEN (a) - 1;
+      WHILE i < j DO
+         tmp := a[i]; a[i] := a[j]; a[j] := tmp;
+   INC (i); DEC (j);
+      END;
+   END Swap;
     PROCEDURE (exif: TExif) ReadAscii (Offset, Count: LONGINT; VAR res: String);
     BEGIN
 
